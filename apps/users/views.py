@@ -20,13 +20,13 @@ class UserListView(LoginRequiredMixin, ListView):
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
-    model = Task
-    # template_name = 'users/profile.html'
-    # context_object_name = 'tasks'
+    model = User
+    template_name = 'users/profile_detail.html'
 
-    # def get(self, request, *args, **kwargs):
-    # user = User.objects.filter(user=request.get)
-    # return super().get(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = Task.objects.all()
+        return context
 
 
 def register(request):
@@ -45,7 +45,7 @@ def register(request):
 
 
 @login_required
-def profile(request):
+def profile(request, pk):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(
@@ -54,14 +54,15 @@ def profile(request):
             u_form.save()
             p_form.save()
             messages.success(request, f'Account updated')
-            return redirect('profile')
+            return redirect('profile-user', pk=request.user.id)
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'tasks': Task.objects.filter(worker_id=request.user),
     }
 
     return render(request, 'users/profile_edit.html', context)

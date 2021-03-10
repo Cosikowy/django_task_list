@@ -6,6 +6,10 @@
         <div class="media-body">
             <h2 class="account-heading">{{ user.username }}</h2>
             <p class="text-secondary">{{ user.email }}</p>
+            {% if user.id == request.user.id %}
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'profile-edit' user.id%}">Update</a>
+            {% endif %}
+
         </div>
     </div>
 </div>

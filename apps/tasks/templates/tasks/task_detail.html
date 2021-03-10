@@ -5,7 +5,12 @@
     <div class="media-body">
         <div class="article-metadata">
             <p class="mr-2">
-                Assigned to <a href="{% url 'profile' %}">{{ task.worker }}</a>
+                Assigned to <a href="{% url 'profile-user' user.id%}">{{ task.worker }}</a>. Status:
+                {% if task.status %}
+                <a style="color:green">Done</a>
+                {% else %}
+                <a style="color:red">In progress</a>
+                {% endif %}</a>
                 <small class="text-muted">{{ object.date_posted|date:"d F Y" }}</small>
             </p>
             {% if object.worker == user %}
