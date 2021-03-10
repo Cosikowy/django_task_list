@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 from .models import Task
 from .forms import TaskForm
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
@@ -17,28 +18,21 @@ class TaskdetailView(LoginRequiredMixin, DetailView):
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
-    model = Task
+    queryset = Task.objects.all()
     form_class = TaskForm
-    # fields = ['title', 'content']
+    template_name = 'tasks/task_form.html'
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.save()
         return super().form_valid(form)
 
 
 class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Task
-    fields = ['title', 'content']
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    form_class = TaskForm
 
     def test_func(self):
-        task = self.get_object()
-        if self.request.user == task.author:
-            return True
-        return False
+        return True
 
 
 class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -46,10 +40,7 @@ class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = '/'
 
     def test_func(self):
-        task = self.get_object()
-        if self.request.user == task.author:
-            return True
-        return False
+        return True
 
 
 def about(request):
