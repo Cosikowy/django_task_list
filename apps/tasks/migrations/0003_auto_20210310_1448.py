@@ -31,7 +31,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='task',
-            name='asignee',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assigned_tasks', to=settings.AUTH_USER_MODEL),
+            name='worker',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='assigned_tasks', to=settings.AUTH_USER_MODEL),
         ),
     ]

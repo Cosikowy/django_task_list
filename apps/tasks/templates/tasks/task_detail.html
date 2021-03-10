@@ -5,7 +5,7 @@
     <div class="media-body">
         <div class="article-metadata">
             <p class="mr-2"> Created by <a href="{% url 'profile' %}">{{ task.author }}</a>.
-                Assigned to <a href="{% url 'profile' %}">{{ task.asignee }}</a>
+                Assigned to <a href="{% url 'profile' %}">{{ task.worker }}</a>
                 <small class="text-muted">{{ object.date_posted|date:"d F Y" }}</small>
             </p>
             {% if object.author == user %}

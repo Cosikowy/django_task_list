@@ -15,13 +15,15 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='task',
-            name='asignee',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='asignee', to='auth.user'),
+            name='worker',
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, related_name='worker', to='auth.user'),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='task',
             name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='author', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='author', to=settings.AUTH_USER_MODEL),
         ),
     ]

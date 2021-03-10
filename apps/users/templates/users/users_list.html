@@ -8,7 +8,7 @@
             <a class="mr-2" href="{% url 'profile' %}">{{ user.username }}</a>
         </div>
         {% for task in tasks %}
-        {% if task.asignee.id == user.id %}
+        {% if task.worker.id == user.id %}
         <li>
             <a href="{% url 'task-detail' task.id%}">{{task}}</a> to {{task.deadline.date}}
             {% if task.status %}

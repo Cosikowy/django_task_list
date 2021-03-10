@@ -1,13 +1,13 @@
 {% extends "tasks/base.html" %}
 {% block content %}
 {% for task in tasks %}
-{% if request.user.id == task.author.id or request.user.id == task.asignee.id%}
+{% if request.user.id == task.author.id or request.user.id == task.worker.id%}
 <article class="media content-section">
   <img class="rounded-circle article-img" src="{{ task.author.profile.image.url }}">
   <div class="media-body">
     <div class="article-metadata">
       <p class="mr-2"> Created by <a href="{% url 'profile' %}">{{ task.author }}</a>.
-        Assigned to <a href="{% url 'profile' %}">{{ task.asignee }}</a>
+        Assigned to <a href="{% url 'profile' %}">{{ task.worker }}</a>
         <small class="text-muted">{{ task.date_posted|date:"d F Y" }}</small>
       </p>
     </div>

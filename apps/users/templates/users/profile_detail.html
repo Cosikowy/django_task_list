@@ -1,5 +1,4 @@
 {% extends "tasks/base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
 <div class="content-section">
     <div class="media">
@@ -13,7 +12,7 @@
 <div class="content-section">
     <a>Tasks assigned to user:</a>
     {% for task in tasks %}
-    {% if task.asignee.id == user.id %}
+    {% if task.worker.id == user.id %}
     <li>
         <a href="{% url 'task-detail' task.id%}"> {{task}} </a> due to {{ task.deadline.date }}
     </li>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,10 +19,10 @@ class UserListView(LoginRequiredMixin, ListView):
         return context
 
 
-class UserProfileView(LoginRequiredMixin, ListView):
+class UserProfileView(LoginRequiredMixin, DetailView):
     model = Task
-    template_name = 'users/profile.html'
-    context_object_name = 'tasks'*
+    # template_name = 'users/profile.html'
+    # context_object_name = 'tasks'
 
     # def get(self, request, *args, **kwargs):
     # user = User.objects.filter(user=request.get)
@@ -64,4 +64,4 @@ def profile(request):
         'p_form': p_form
     }
 
-    return render(request, 'users/profile-edit.html', context)
+    return render(request, 'users/profile_edit.html', context)

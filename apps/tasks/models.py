@@ -10,11 +10,11 @@ class Task(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='author')
-    asignee = models.ForeignKey(
+    worker = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='assigned_tasks')
     status = models.BooleanField(default=False)
     deadline = models.DateTimeField(default=timezone.now)
-    file = models.CharField(max_length=60, blank=True)
+    file = models.FileField()
 
     def __str__(self):
         return self.title
