@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "tasks/base.html" %}
 {% block content %}
 {% for post in posts %}
 <article class="media content-section">
@@ -8,7 +8,7 @@
       <a class="mr-2" href="{% url 'profile' %}">{{ task.author }}</a>
       <small class="text-muted">{{ task.date_posted|date:"d F Y" }}</small>
     </div>
-    <h2><a class="article-title" href="{% url 'task-detail' post.id%}">{{ task.title }}</a></h2>
+    <h2><a class="article-title" href="{% url 'task-detail' task.id%}">{{ task.title }}</a></h2>
     <p class="article-content">{{ task.content }}</p>
   </div>
 </article>

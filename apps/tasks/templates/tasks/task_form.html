@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "tasks/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
 <div class='content-section'>
@@ -8,9 +8,9 @@
             <legend class='border-bottom mb-4'>New post</legend>
             {{ form|crispy }}
         </fieldset>
-    <div class='form-group'>
-        <button class="btn btn-outline-info" type='submit'>Post</button>
-    </div>
+        <div class='form-group'>
+            <button class="btn btn-outline-info" type='submit'>Post</button>
+        </div>
     </form>
 
 </div>

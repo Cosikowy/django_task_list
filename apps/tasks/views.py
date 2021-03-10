@@ -8,12 +8,12 @@ def home(request):
     context = {
         'posts': Task.objects.all()
     }
-    return render(request, 'blog/home.html', context)
+    return render(request, 'tasks/home.html', context)
 
 
 class TaskListView(ListView):
     model = Task
-    template_name = 'apps/tasks/home.html'
+    template_name = 'tasks/home.html'
     context_object_name = 'tasks'
     ordering = ['-date_posted']
 
@@ -58,4 +58,4 @@ class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request):
-    return render(request, 'apps/blog/about.html', {'title': 'About'})
+    return render(request, 'tasks/about.html', {'title': 'About'})
