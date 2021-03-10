@@ -1,0 +1,25 @@
+{% extends "tasks/base.html" %}
+{% block content %}
+{% for user in users %}
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ user.profile.image.url }}">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{% url 'profile' %}">{{ user.username }}</a>
+        </div>
+        {% for task in tasks %}
+        {% if task.asignee.id == user.id %}
+        <li>
+            <a href="{% url 'task-detail' task.id%}">{{task}}</a> to {{task.deadline.date}}
+            {% if task.status %}
+            <a style="color:green">Done</a>
+            {% else %}
+            <a style="color:red">In progress</a>
+            {% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+    </div>
+</article>
+{% endfor %}
+{% endblock content %}

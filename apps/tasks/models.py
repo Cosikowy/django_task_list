@@ -8,10 +8,16 @@ class Task(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author')
+    asignee = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='assigned_tasks')
+    status = models.BooleanField(default=False)
+    deadline = models.DateTimeField(default=timezone.now)
+    file = models.CharField(max_length=60, blank=True)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+        return reverse('task-detail', kwargs={'pk': self.pk})

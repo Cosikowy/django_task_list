@@ -17,7 +17,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('apps.tasks.urls')),
-    path('profile/', user_views.profile, name='profile'),
+    path('profile/edit', user_views.profile, name='profile-edit'),
+    path('profile/', user_views.UserProfileView.as_view(), name='profile'),
+
+    path('users/', include('apps.users.urls')),
 ]
 
 if settings.DEBUG:

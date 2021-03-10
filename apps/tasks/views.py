@@ -4,21 +4,14 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
-def home(request):
-    context = {
-        'posts': Task.objects.all()
-    }
-    return render(request, 'tasks/home.html', context)
-
-
-class TaskListView(ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     template_name = 'tasks/home.html'
     context_object_name = 'tasks'
     ordering = ['-date_posted']
 
 
-class TaskdetailView(DetailView):
+class TaskdetailView(LoginRequiredMixin, DetailView):
     model = Task
 
 
