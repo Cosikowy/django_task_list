@@ -20,6 +20,8 @@ urlpatterns = [
     path('profile/<int:pk>/edit', user_views.profile, name='profile-edit'),
     path('profile/<int:pk>/', user_views.UserProfileView.as_view(),
          name='profile-user'),
+    path('profile/<int:pk>/delete',
+         user_views.ProfileDeleteView.as_view(), name='profile-delete'),
 
     path('users/', include('apps.users.urls')),
 ]
