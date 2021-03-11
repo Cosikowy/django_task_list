@@ -1,8 +1,13 @@
+from django.template.loader import render_to_string
+from django.core.mail import send_mass_mail
+from celery import shared_task
 import os
 
 from celery import Celery
-# set the default Django settings module for the 'celery' program.
+from celery.schedules import crontab
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_list.settings')
+
+# set the default Django settings module for the 'celery' program.
 
 app = Celery('tasks_list')
 
@@ -19,3 +24,45 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
+
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+
+    # Calls test('hello') every 10 seconds.
+    sender.add_periodic_task(15.0, test.s('hello'), name='add every 10')
+
+    # Calls test('world') every 30 seconds
+    sender.add_periodic_task(30.0, test.s('world'), expires=10)
+
+    sender.add_periodic_task(
+        crontab(hour=0, minute=0),
+        check_tasks_daily.s(),
+    )
+
+
+@app.task
+def test(arg):
+    print(arg)
+
+
+@shared_task
+def check_tasks_daily():
+    from apps.tasks.models import Task
+    tasks = Task.objects.all()
+    emails_to_send = []
+
+    for task in tasks:
+        if not task.status:
+            email_context = {'task': task}
+            email_template = render_to_string(
+                'tasks/email.html', context=email_context)
+            emails_to_send.append(
+                (
+                    task.title,
+                    email_template,
+                    None,
+                    [task.worker.email]
+                )
+            )
+    send_mass_mail(tuple(emails_to_send), fail_silently=False)
