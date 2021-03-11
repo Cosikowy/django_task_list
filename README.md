@@ -7,6 +7,10 @@ celery -A task_list beat -l info\
 python manage.py migrate\
 python manage.py runserver\
 
+Wszystkie zadania ze statusem niezakończonym pokazują się na głównej stronie, zakładka "users" wyświetla listę użytkowników z ich zadaniami \ 
+kliknięcie w tytuł zadania przenosi do szczegółów \
+kliknięcie w nazwę użytkownika przenosi do profilu użytkownika \ 
+
 
 niestety znalazło się kilka bugów,
 aby edytować profil należy dodać po id /edit (np. profile/1/edit)
