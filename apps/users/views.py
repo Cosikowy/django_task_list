@@ -46,23 +46,32 @@ def register(request):
 
 @login_required
 def profile(request, pk):
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(
-            request.POST, request.FILES, instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Account updated')
-            return redirect('profile-user', pk=request.user.id)
+    user = User.objects.get(pk=pk)
+    if request.user.id != user.id and not request.user.profile.is_user_admin:
+        messages.error(
+            request, f"Unauthorized, You don't have permissions to do it")
+        return redirect('task-list-home')
     else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+        if request.method == 'POST':
+            u_form = UserUpdateForm(request.POST, instance=user)
+            p_form = ProfileUpdateForm(
+                request.POST, request.FILES, instance=user.profile)
 
-    context = {
-        'u_form': u_form,
-        'p_form': p_form,
-        'tasks': Task.objects.filter(worker_id=request.user),
-    }
+            if u_form.is_valid() and p_form.is_valid():
+                u_form.save()
+                p_form.save()
+                messages.success(request, f'Account updated')
+                return redirect('profile-user', pk=user.id)
+        else:
+            u_form = UserUpdateForm(instance=user)
+            p_form = ProfileUpdateForm(instance=user.profile)
+            if not request.user.profile.is_user_admin:
+                del p_form.fields['is_user_admin']
+                del p_form.fields['is_task_admin']
 
-    return render(request, 'users/profile_edit.html', context)
+        context = {
+            'u_form': u_form,
+            'p_form': p_form,
+        }
+
+        return render(request, 'users/profile_edit.html', context)

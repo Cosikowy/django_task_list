@@ -1,6 +1,7 @@
 {% extends "tasks/base.html" %}
 {% block content %}
 {% for task in tasks %}
+{% if not task.status %}
 {% if request.user.id == task.worker.id%}
 <article class="media content-section">
   <img class="rounded-circle article-img" src="{{ task.worker.profile.image.url }}">
@@ -8,11 +9,7 @@
     <div class="article-metadata">
       <p class="mr-2">
         Assigned to <a href="{% url 'profile-user' user.id%}">{{ task.worker }}</a>. Status:
-        {% if task.status %}
-        <a style="color:green">Done</a>
-        {% else %}
         <a style="color:red">In progress</a>
-        {% endif %}
         <small class="text-muted">{{ task.date_posted|date:"d F Y" }}</small>
       </p>
     </div>
@@ -20,6 +17,7 @@
     <p class="article-content">{{ task.content }}</p>
   </div>
 </article>
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endblock content %}
