@@ -51,22 +51,20 @@ def check_tasks_daily():
     from apps.tasks.models import Task
     tasks = Task.objects.all()
     emails_to_send = []
-    unfinished = []
+
     for task in tasks:
         if not task.status:
-            unfinished.append(task)
-
-    email_context = {'tasks': unfinished, 'title': 'Daily task info!'}
-    email_template = render_to_string(
-        'tasks/email.html', context=email_context)
-    emails_to_send.append(
-        (
-            task.title,
-            email_template,
-            None,
-            [task.worker.email]
-        )
-    )
+            email_context = {'task': task, 'title': 'Daily dose of tasks!'}
+            email_template = render_to_string(
+                'tasks/email.html', context=email_context)
+            emails_to_send.append(
+                (
+                    task.title,
+                    email_template,
+                    None,
+                    [task.worker.email]
+                )
+            )
     send_mass_mail(tuple(emails_to_send), fail_silently=False)
 
 
