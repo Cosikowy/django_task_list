@@ -1,5 +1,5 @@
 import os
-from datetime.datetime import date
+from datetime import datetime
 from django.template.loader import render_to_string
 from django.core.mail import send_mass_mail
 from celery import shared_task
@@ -74,7 +74,7 @@ def check_deadlines():
     tasks = Task.objects.all()
     emails_to_send = []
     for task in tasks:
-        if task.deadline > date.today():
+        if task.deadline > datetime.date.today():
             email_context = {'tasks': task, 'title': 'You missed the deadline'}
             email_template = render_to_string(
                 'tasks/email.html', context=email_context)
