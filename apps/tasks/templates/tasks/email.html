@@ -5,13 +5,15 @@
 <head>
     <meta charset="utf-8">
 
-    <title>{{ task.title }}</title>
+    <title>{{title}}</title>
 
 </head>
 
 <body>
+    {% for task in tasks %}
     {{ task.title }} was/is due to {{ task.deadline.date }}. You are responsible for {{ task.title }}, get your job
     done!
+    {% endfor %}
 </body>
 
 </html>
